@@ -23,7 +23,7 @@ public class LibraryTest {
     private final Book javaConcurrencyInPractice = Book.builder()
                                                        .isbn("0321349601")
                                                        .title("Thinking in Java")
-                                                       .authors(Set.of(new Author("Brian Gotez"), new Author("Joshua Bloch"), new Author("David Holmes")))
+                                                       .authors(Set.of(new Author("Brian Goetz"), new Author("Joshua Bloch"), new Author("David Holmes")))
                                                        .publishYear(2006)
                                                        .publisher("Addison-Wesley")
                                                        .build();
@@ -132,5 +132,17 @@ public class LibraryTest {
         List<Book> actualBorrowedBooks = library.getBorrowedBooksFor(userId);
 
         assertThat(actualBorrowedBooks).isEqualTo(List.of(thinkingInJava, javaConcurrencyInPractice));
+    }
+
+    @Test
+    void whenUserBorrowedNothing_getBorrowedBooksFor_shouldReturnEmptyList() {
+        String userId = "user1";
+        library.addBookToCatalog(new BookEntry(thinkingInJava, 2));
+        library.addBookToCatalog(new BookEntry(javaConcurrencyInPractice, 1));
+
+
+        List<Book> actualBorrowedBooks = library.getBorrowedBooksFor(userId);
+
+        assertThat(actualBorrowedBooks).isEmpty();
     }
 }
